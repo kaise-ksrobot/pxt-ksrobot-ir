@@ -14,7 +14,9 @@
         "ReceiverIR.h",
         "RemoteIR.h",
         "TransmitterIR.cpp",
-        "TransmitterIR.h"
+        "TransmitterIR.h",
+        "README.md",
+        "_locales/zh/KSRobotIR-strings.json" 
     ],
     "public": true
 }
