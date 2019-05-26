@@ -1,0 +1,6 @@
+{
+	"KSRobot_IR|block": "KSRobot遙控器",
+	"KSRobot_IR.onPressEvent|block": "按下 %btn 鍵",
+	"KSRobot_IR.init|block": "設定紅外遙控腳位在 %pin"
+		
+}

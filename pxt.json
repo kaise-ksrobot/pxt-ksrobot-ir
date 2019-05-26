@@ -16,7 +16,7 @@
         "TransmitterIR.cpp",
         "TransmitterIR.h",
         "README.md",
-        "_locales/zh/KSRobotIR-strings.json" 
+        "_locales/zh/KSRobot_IR-strings.json" 
     ],
     "public": true
 }
