@@ -144,28 +144,7 @@ void ReceiverIR::isr_fall(void) {
                     work.c3 = -1;
                     work.d1 = -1;
                     work.d2 = -1;
-                } else if (InRange(a, RemoteIR::TUS_AEHA * 8) && InRange(b, RemoteIR::TUS_AEHA * 4)) {
-                    /*
-                     * AEHA.
-                     */
-                    data.format = RemoteIR::AEHA;
-                    work.state = Receiving;
-                    data.bitcount = 0;
-                } else if (InRange(a, RemoteIR::TUS_AEHA * 8) && InRange(b, RemoteIR::TUS_AEHA * 8)) {
-                    /*
-                     * AEHA Repeat.
-                     */
-                    data.format = RemoteIR::AEHA_REPEAT;
-                    work.state = Received;
-                    data.bitcount = 0;
-                    work.c1 = -1;
-                    work.c2 = -1;
-                    work.c3 = -1;
-                    work.d1 = -1;
-                    work.d2 = -1;
-                } else {
-                    init_state();
-                }
+                } 
             }
             break;
         case Receiving:
@@ -197,38 +176,7 @@ void ReceiverIR::isr_fall(void) {
                 timeout.detach();
                 timeout.attach_us(this, &ReceiverIR::isr_timeout, RemoteIR::TUS_NEC * 5);
 #endif
-            } else if (RemoteIR::AEHA == data.format) {
-                work.d2 = timer.read_us();
-                int a = work.d2 - work.d1;
-                if (InRange(a, RemoteIR::TUS_AEHA * 3)) {
-                    data.buffer[data.bitcount / 8] |= (1 << (data.bitcount % 8));
-                } else if (InRange(a, RemoteIR::TUS_AEHA * 1)) {
-                    data.buffer[data.bitcount / 8] &= ~(1 << (data.bitcount % 8));
-                }
-                data.bitcount++;
-#if 0
-                /*
-                 * Typical length of AEHA is 48 bits.
-                 * Please check a specification of your remote controller if you find a problem.
-                 */
-                if (48 <= data.bitcount) {
-                    data.state = Received;
-                    work.c1 = -1;
-                    work.c2 = -1;
-                    work.c3 = -1;
-                    work.d1 = -1;
-                    work.d2 = -1;
-                }
-#else
-                /*
-                 * Set timeout for tail detection automatically.
-                 */
-                timeout.detach();
-                timeout.attach_us(this, &ReceiverIR::isr_timeout, RemoteIR::TUS_AEHA * 5);
-#endif
-            } else if (RemoteIR::SONY == data.format) {
-                work.d1 = timer.read_us();
-            }
+            } 
             break;
         case Received:
             break;
@@ -262,39 +210,7 @@ void ReceiverIR::isr_rise(void) {
         case Receiving:
             if (RemoteIR::NEC == data.format) {
                 work.d1 = timer.read_us();
-            } else if (RemoteIR::AEHA == data.format) {
-                work.d1 = timer.read_us();
-            } else if (RemoteIR::SONY == data.format) {
-                work.d2 = timer.read_us();
-                int a = work.d2 - work.d1;
-                if (InRange(a, RemoteIR::TUS_SONY * 2)) {
-                    data.buffer[data.bitcount / 8] |= (1 << (data.bitcount % 8));
-                } else if (InRange(a, RemoteIR::TUS_SONY * 1)) {
-                    data.buffer[data.bitcount / 8] &= ~(1 << (data.bitcount % 8));
-                }
-                data.bitcount++;
-#if 1
-                /*
-                 * How do I know the correct length? (6bits, 12bits, 15bits, 20bits...)
-                 * By a model only?
-                 * Please check a specification of your remote controller if you find a problem.
-                 */
-                if (32 <= data.bitcount) {
-                    work.state = Received;
-                    work.c1 = -1;
-                    work.c2 = -1;
-                    work.c3 = -1;
-                    work.d1 = -1;
-                    work.d2 = -1;
-                }
-#else
-                /*
-                 * Set timeout for tail detection automatically.
-                 */
-                timeout.detach();
-                timeout.attach_us(this, &ReceiverIR::isr_timeout, RemoteIR::TUS_SONY * 4);
-#endif
-            }
+            } 
             break;
         case Received:
             break;
