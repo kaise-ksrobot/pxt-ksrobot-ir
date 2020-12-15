@@ -1,6 +1,6 @@
 {
     "name": "KSRobot_IR",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "description": "Extension for KAISE KSRobot IR receiver module",
     "license": "MIT",
     "dependencies": {
@@ -8,11 +8,6 @@
     },
     "files": [
         "KSRobot.ts",
-        "enums.d.ts",
-        "KSRobot_IR.cpp",
-        "ReceiverIR.cpp",
-        "ReceiverIR.h",
-        "RemoteIR.h",
         "README.md",
         "_locales/zh/KSRobot_IR-strings.json" 
     ],
